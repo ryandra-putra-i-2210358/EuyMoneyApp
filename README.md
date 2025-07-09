@@ -1,4 +1,4 @@
-[17:30, 09/07/2025] Egun: # 📱 EuyMoney - Aplikasi Mobile Pencatat Keuangan
+# 📱 EuyMoney - Aplikasi Mobile Pencatat Keuangan
 
 ![Flutter](https://img.shields.io/badge/Flutter-3.22-blue?logo=flutter&logoColor=white)
 ![Dart](https://img.shields.io/badge/Dart-3.3-blue?logo=dart&logoColor=white)
