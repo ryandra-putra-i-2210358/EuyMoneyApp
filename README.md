@@ -1,16 +1,100 @@
-# tugas_mobile_money_tracker
+# 📱 MyFlutterApp - Aplikasi Mobile Pencatat Keuangan
 
-A new Flutter project.
+![Flutter](https://img.shields.io/badge/Flutter-3.22-blue?logo=flutter&logoColor=white)
+![Dart](https://img.shields.io/badge/Dart-3.3-blue?logo=dart&logoColor=white)
+![Drift](https://img.shields.io/badge/Drift-LocalDB-informational?logo=sqlite&logoColor=white)
+![Status](https://img.shields.io/badge/Status-Completed-brightgreen)
 
-## Getting Started
+> Dibuat menggunakan Flutter & Dart  
+> Project Mata Kuliah **Pemrograman Mobile**  
+> Oleh: Ryandra & Erlanga
 
-This project is a starting point for a Flutter application.
+---
 
-A few resources to get you started if this is your first Flutter project:
+## ✨ Ringkasan Singkat
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Aplikasi mobile untuk mencatat pemasukan dan pengeluaran harian, dengan fitur utama seperti tambah transaksi, filter tanggal, dan ringkasan keuangan bulanan. Data disimpan **lokal** tanpa koneksi internet.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+---
+
+## 🧠 Latar Belakang
+
+Manajemen keuangan pribadi menjadi tantangan, terutama bagi anak muda yang sering melakukan pembelian impulsif — yaitu membeli sesuatu secara tiba-tiba tanpa perencanaan. Aplikasi ini dikembangkan sebagai solusi praktis untuk melacak arus kas harian secara cepat dan sederhana.
+
+---
+
+## 🎯 Tujuan Aplikasi
+
+- Mencatat transaksi (income/expense)
+- Menyediakan ringkasan keuangan bulanan
+- Menyimpan data secara lokal tanpa internet
+- Memberikan UI yang simpel dan efisien
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+- Flutter & Dart
+- Drift (Local Database)
+- Flutter Material Widgets (tampilan modern dan responsif)
+
+---
+
+## 📱 Tampilan Aplikasi
+
+| Home Page | Add Transaction | Add Category |
+|-----------|-----------------|---------|
+| ![Home](screenshot/HomePage.png) | ![AddTransaction](screenshot/AddTransaction.png) | ![AddCategory](screenshot/AddKategory.png) |
+
+---
+
+## 🧩 Fitur Utama
+
+- [x] Tambah/Edit/Hapus Transaksi
+- [x] Filter transaksi berdasarkan tanggal (kalender/date picker)
+- [x] Ringkasan total pemasukan dan pengeluaran
+- [x] UI adaptif, responsif, dan clean
+
+---
+
+## 🧪 Alur Penggunaan
+
+1. Buka aplikasi
+2. Tambahkan kategori baru (jika diperlukan)
+3. Tambahkan transaksi keuangan
+4. Lihat ringkasan dan filter berdasarkan tanggal
+5. Done 💸
+
+---
+
+## 🤝 Pembagian Tugas
+
+| Nama     | Tanggung Jawab                                                                 |
+|----------|---------------------------------------------------------------------------------|
+| Ryandra  | Homepage, UI Category & Transaction, Integrasi Drift, Final Debug & Integration |
+| Erlanga  | CRUD Category, Insert & Show Transaction, Update & Delete Transaction           |
+
+---
+
+## 🧠 Pembelajaran & Tantangan
+
+- Implementasi database lokal dengan Drift
+- Modularisasi UI agar reusable & maintainable
+- Debugging perbedaan perilaku UI antara emulator dan device asli
+
+---
+
+## 📌 Catatan Tambahan
+
+- Data disimpan **lokal** (tidak memerlukan koneksi internet)
+- Kompatibel dari Android SDK 21+
+- Potensi pengembangan: menyimpan dan menyinkronkan data pengguna ke cloud menggunakan Firebase, agar data tetap aman dan bisa diakses di berbagai perangkat.
+
+---
+
+## 🔮 Rencana Pengembangan (Opsional)
+
+- State management menggunakan Provider atau Riverpod
+- Fitur dark mode
+- Visualisasi data keuangan dengan chart
+- Export data ke PDF/Excel
