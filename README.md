@@ -105,7 +105,7 @@ Manajemen keuangan pribadi menjadi tantangan, terutama bagi anak muda yang serin
 - Fitur dark mode
 - Visualisasi data keuangan dengan chart
 - Export data ke PDF/Excel
-[17:31, 09/07/2025] Egun: ---
+
 
 ## 🙌 Terima Kasih
 
