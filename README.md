@@ -44,7 +44,7 @@ Manajemen keuangan pribadi menjadi tantangan, terutama bagi anak muda yang serin
 
 | Home Page | Add Transaction | Add Category |
 |-----------|-----------------|---------|
-| ![Home](screenshot/HomePage.png) | ![AddTransaction](screenshot/AddTransaction.png) | ![AddCategory](screenshot/AddKategory.png) |
+| ![Home](screenshots/home.png) | ![AddTransaction](screenshots/insert.png) | ![AddCategory](screenshots/income.png) |
 
 ---
 
