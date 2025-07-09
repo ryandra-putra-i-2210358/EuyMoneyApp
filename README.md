@@ -72,7 +72,7 @@ Manajemen keuangan pribadi menjadi tantangan, terutama bagi anak muda yang serin
 | Nama     | Tanggung Jawab                                                                 |
 |----------|---------------------------------------------------------------------------------|
 | Ryandra  | Homepage, UI Category & Transaction, Integrasi Drift, Final Debug & Integration |
-| Erlanga  | CRUD Category, Insert & Show Transaction, Update & Delete Transaction           |
+| Erlangga  | CRUD Category, Insert & Show Transaction, Update & Delete Transaction           |
 
 ---
 
