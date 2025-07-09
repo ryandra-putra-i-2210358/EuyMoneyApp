@@ -7,7 +7,7 @@
 
 > Dibuat menggunakan Flutter & Dart  
 > Project Mata Kuliah **Pemrograman Mobile**  
-> Oleh: Ryandra & Erlanga
+> Oleh: Ryandra & Erlangga
 
 ---
 
