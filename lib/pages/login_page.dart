@@ -40,43 +40,110 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.green.shade100,
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(24),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                Text(
-                  "Login",
-                  style: GoogleFonts.montserrat(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                  ),
+      backgroundColor: Colors.white,
+      body: Stack(
+        children: [
+          // Elemen lengkung atas
+          Positioned(
+            top: -50,
+            right: -50,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFF7F00FF), Color(0xFFE100FF)],
                 ),
-                const SizedBox(height: 30),
-                Form(
-                  key: _formKey,
-                  child: Column(
-                    children: [
-                      TextFormField(
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(100),
+                ),
+              ),
+            ),
+          ),
+
+          // Elemen lengkung bawah
+          Positioned(
+            bottom: -60,
+            left: -60,
+            child: Container(
+              width: 200,
+              height: 200,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFFFA03B), Color(0xFFFFFB00)],
+                ),
+                borderRadius: BorderRadius.only(
+                  topRight: Radius.circular(100),
+                ),
+              ),
+            ),
+          ),
+
+          // Konten utama
+          Center(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    const SizedBox(height: 40),
+                    Text(
+                      "Sign In",
+                      style: GoogleFonts.poppins(
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 30),
+
+                    // Username Field
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: TextFormField(
                         controller: usernameController,
                         decoration: InputDecoration(
-                          labelText: "Username",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          hintText: "Username",
+                          prefixIcon: const Icon(Icons.person_outline),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 18),
                         ),
                         validator: (value) =>
-                            value!.isEmpty ? 'Username wajib diisi' : null,
+                        value!.isEmpty ? 'Username wajib diisi' : null,
                       ),
-                      const SizedBox(height: 16),
-                      TextFormField(
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Password Field
+                    Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 10,
+                            offset: Offset(0, 4),
+                          )
+                        ],
+                      ),
+                      child: TextFormField(
                         controller: passwordController,
                         obscureText: _isObscure,
                         decoration: InputDecoration(
-                          labelText: "Password",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
+                          hintText: "Password",
+                          prefixIcon: const Icon(Icons.lock_outline),
                           suffixIcon: IconButton(
                             icon: Icon(_isObscure
                                 ? Icons.visibility
@@ -84,42 +151,63 @@ class _LoginPageState extends State<LoginPage> {
                             onPressed: () =>
                                 setState(() => _isObscure = !_isObscure),
                           ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 18),
                         ),
                         validator: (value) =>
-                            value!.isEmpty ? 'Password wajib diisi' : null,
+                        value!.isEmpty ? 'Password wajib diisi' : null,
                       ),
-                      const SizedBox(height: 24),
-                      SizedBox(
-                        width: double.infinity,
-                        height: 48,
-                        child: ElevatedButton(
-                          onPressed: () {
-                            if (_formKey.currentState!.validate()) {
-                              _login();
-                            }
-                          },
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.green,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(12)),
+                    ),
+
+                    const SizedBox(height: 30),
+
+                    // Tombol Login
+                    SizedBox(
+                      width: double.infinity,
+                      height: 50,
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (_formKey.currentState!.validate()) {
+                            _login();
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          elevation: 6,
+                          padding: const EdgeInsets.symmetric(vertical: 14),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
                           ),
-                          child: const Text("Login"),
+                          backgroundColor: const Color(0xFF7F00FF),
+                          foregroundColor: Colors.white,
+                        ),
+                        child: Text(
+                          "LOGIN",
+                          style: GoogleFonts.poppins(fontSize: 16),
                         ),
                       ),
-                    ],
-                  ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // Link ke Register
+                    TextButton(
+                      onPressed: () {
+                        Navigator.pushReplacementNamed(context, '/register');
+                      },
+                      child: Text(
+                        "Belum punya akun? Daftar di sini",
+                        style: GoogleFonts.poppins(
+                          color: Colors.deepPurple,
+                          fontSize: 13,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
-                const SizedBox(height: 12),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/register');
-                  },
-                  child: const Text("Belum punya akun? Daftar di sini"),
-                ),
-              ],
+              ),
             ),
           ),
-        ),
+        ],
       ),
     );
   }

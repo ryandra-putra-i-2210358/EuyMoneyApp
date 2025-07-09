@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import 'package:tugas_mobile_money_tracker_login_register/models/db_instance.dart';
+
 import 'package:tugas_mobile_money_tracker_login_register/models/database.dart';
 import 'package:tugas_mobile_money_tracker_login_register/models/transaction_with_category.dart';
+
+
+final database = dbInstance; // BUKAN AppDb()
 
 class TransactionPage extends StatefulWidget {
   final TransactionWithCategory? transactionWithCategory;
@@ -14,7 +19,6 @@ class TransactionPage extends StatefulWidget {
 }
 
 class _TransactionPageState extends State<TransactionPage> {
-  final AppDb database = AppDb();
   bool isExpense = true;
 
   late int type;
@@ -26,26 +30,22 @@ class _TransactionPageState extends State<TransactionPage> {
   Category? selectedCategory;
 
   Future insert(
-    int amount,
-    DateTime date,
-    String nameDetail,
-    int categoryId,
-  ) async {
+      int amount,
+      DateTime date,
+      String nameDetail,
+      int categoryId,
+      ) async {
     DateTime now = DateTime.now();
-    final row = await database
-        .into(database.transactions)
-        .insertReturning(
-          TransactionsCompanion.insert(
-            name: nameDetail,
-            category_id: categoryId,
-            transaction_date: date,
-            amount: amount,
-            createdAt: now,
-            updatedAt: now,
-          ),
-        );
-
-    print('Apanihhh : ' + row.toString());
+    await database.into(database.transactions).insertReturning(
+      TransactionsCompanion.insert(
+        name: nameDetail,
+        category_id: categoryId,
+        transaction_date: date,
+        amount: amount,
+        createdAt: now,
+        updatedAt: now,
+      ),
+    );
   }
 
   Future<List<Category>> getAllCategory(int type) async {
@@ -53,12 +53,12 @@ class _TransactionPageState extends State<TransactionPage> {
   }
 
   Future update(
-    int transactionId,
-    int amount,
-    int categoryId,
-    DateTime transactionDate,
-    String nameDetail,
-  ) async {
+      int transactionId,
+      int amount,
+      int categoryId,
+      DateTime transactionDate,
+      String nameDetail,
+      ) async {
     return await database.updateTransactionRepo(
       transactionId,
       amount,
@@ -78,16 +78,13 @@ class _TransactionPageState extends State<TransactionPage> {
     super.initState();
   }
 
-  void updateTransactionView(TransactionWithCategory transactionWithCategory) {
-    amountController.text =
-        transactionWithCategory.transaction.amount.toString();
-    detailController.text = transactionWithCategory.transaction.name;
-    dateController.text = DateFormat(
-      "yyyy-MM-dd",
-    ).format(transactionWithCategory.transaction.transaction_date);
-    type = transactionWithCategory.category.type;
-    (type == 2) ? isExpense = true : isExpense = false;
-    selectedCategory = transactionWithCategory.category;
+  void updateTransactionView(TransactionWithCategory trx) {
+    amountController.text = trx.transaction.amount.toString();
+    detailController.text = trx.transaction.name;
+    dateController.text = DateFormat("yyyy-MM-dd").format(trx.transaction.transaction_date);
+    type = trx.category.type;
+    isExpense = type == 2;
+    selectedCategory = trx.category;
   }
 
   @override
@@ -100,6 +97,7 @@ class _TransactionPageState extends State<TransactionPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // Income/Expense Switch
               Row(
                 children: [
                   Switch(
@@ -107,7 +105,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     onChanged: (bool value) {
                       setState(() {
                         isExpense = value;
-                        type = (isExpense) ? 2 : 1;
+                        type = isExpense ? 2 : 1;
                         selectedCategory = null;
                       });
                     },
@@ -146,47 +144,34 @@ class _TransactionPageState extends State<TransactionPage> {
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
-                  } else {
-                    if (snapshot.hasData) {
-                      if (snapshot.data!.length > 0) {
-                        selectedCategory =
-                            (selectedCategory == null)
-                                ? snapshot.data!.first
-                                : selectedCategory;
-                        print('APnih : ' + snapshot.toString());
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 10),
-                          child: DropdownButton<Category>(
-                            value:
-                                (selectedCategory == null)
-                                    ? snapshot.data!.first
-                                    : selectedCategory,
-                            isExpanded: true,
-                            icon: Icon(Icons.arrow_downward),
-                            items:
-                                snapshot.data!.map((Category item) {
-                                  return DropdownMenuItem<Category>(
-                                    value: item,
-                                    child: Text(item.name),
-                                  );
-                                }).toList(),
-                            onChanged: (Category? value) {
-                              setState(() {
-                                selectedCategory = value;
-                              });
-                            },
-                          ),
-                        );
-                      } else {
-                        return Center(child: Text("Data Kosong"));
-                      }
-                    } else {
-                      return Center(child: Text("Tidak Ada Data"));
-                    }
                   }
+                  if (snapshot.hasData && snapshot.data!.isNotEmpty) {
+                    if (selectedCategory == null) {
+                      selectedCategory = snapshot.data!.first;
+                    }
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 10),
+                      child: DropdownButton<Category>(
+                        value: selectedCategory,
+                        isExpanded: true,
+                        icon: Icon(Icons.arrow_downward),
+                        items: snapshot.data!.map((Category item) {
+                          return DropdownMenuItem<Category>(
+                            value: item,
+                            child: Text(item.name),
+                          );
+                        }).toList(),
+                        onChanged: (Category? value) {
+                          setState(() {
+                            selectedCategory = value;
+                          });
+                        },
+                      ),
+                    );
+                  }
+                  return Center(child: Text("Tidak ada kategori"));
                 },
               ),
-
               SizedBox(height: 25),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -202,9 +187,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       lastDate: DateTime(2099),
                     );
                     if (pickedDate != null) {
-                      String formattedDate = DateFormat(
-                        'yyyy-MM-dd',
-                      ).format(pickedDate);
+                      String formattedDate = DateFormat('yyyy-MM-dd').format(pickedDate);
                       dateController.text = formattedDate;
                     }
                   },
@@ -222,11 +205,10 @@ class _TransactionPageState extends State<TransactionPage> {
                 ),
               ),
               SizedBox(height: 25),
-              // ...existing code...
               Center(
                 child: ElevatedButton(
                   onPressed: () async {
-                    // Validasi sederhana
+                    // Validasi input
                     if (amountController.text.isEmpty ||
                         dateController.text.isEmpty ||
                         detailController.text.isEmpty ||
@@ -236,6 +218,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       );
                       return;
                     }
+
                     int? amount = int.tryParse(amountController.text);
                     if (amount == null) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -243,6 +226,7 @@ class _TransactionPageState extends State<TransactionPage> {
                       );
                       return;
                     }
+
                     DateTime? date;
                     try {
                       date = DateTime.parse(dateController.text);
@@ -254,12 +238,7 @@ class _TransactionPageState extends State<TransactionPage> {
                     }
 
                     if (widget.transactionWithCategory == null) {
-                      await insert(
-                        amount,
-                        date,
-                        detailController.text,
-                        selectedCategory!.id,
-                      );
+                      await insert(amount, date, detailController.text, selectedCategory!.id);
                     } else {
                       await update(
                         widget.transactionWithCategory!.transaction.id,
@@ -269,14 +248,12 @@ class _TransactionPageState extends State<TransactionPage> {
                         detailController.text,
                       );
                     }
+
                     Navigator.pop(context, true);
-                    setState(() {});
                   },
                   child: Text("Save"),
                 ),
               ),
-              // ...existing code...
-              // Tambahkan widget di sini
             ],
           ),
         ),
@@ -284,3 +261,4 @@ class _TransactionPageState extends State<TransactionPage> {
     );
   }
 }
+
