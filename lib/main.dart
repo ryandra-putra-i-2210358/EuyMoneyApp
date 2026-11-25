@@ -1,49 +1,35 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tugas_mobile_money_tracker_login_register/pages/login_page.dart';
-import 'package:tugas_mobile_money_tracker_login_register/pages/register_page.dart';
 import 'package:tugas_mobile_money_tracker_login_register/pages/main_page.dart';
-import 'package:google_fonts/google_fonts.dart';
+import 'package:tugas_mobile_money_tracker_login_register/pages/register_page.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = await SharedPreferences.getInstance();
+  final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+
+  runApp(MyApp(isLoggedIn: isLoggedIn));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  final bool isLoggedIn;
 
-  Future<Widget> _getInitialPage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final isLoggedIn = prefs.getBool('is_logged_in') ?? false;
+  const MyApp({super.key, required this.isLoggedIn});
 
-    if (isLoggedIn) {
-      return const MainPage();
-    } else {
-      return const LoginPage();
-    }
-  }
+  static final ThemeData _appTheme = ThemeData(
+    primarySwatch: Colors.green,
+    textTheme: GoogleFonts.montserratTextTheme(),
+  );
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Money Tracker',
+      title: 'EuyMoney - Money Tracker',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.green,
-        textTheme: GoogleFonts.montserratTextTheme(),
-      ),
-      home: FutureBuilder<Widget>(
-        future: _getInitialPage(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            return snapshot.data!;
-          } else {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
-        },
-      ),
+      theme: _appTheme,
+      home: isLoggedIn ? const MainPage() : const LoginPage(),
       routes: {
         '/login': (context) => const LoginPage(),
         '/register': (context) => const RegisterPage(),
